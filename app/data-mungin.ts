@@ -1,6 +1,6 @@
 import { readFileSync } from "fs";
 
-class WeatherData {
+export class WeatherData {
     day: number;
     maxTemperature: number;
     minTemperature: number;
