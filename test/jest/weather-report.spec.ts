@@ -1,4 +1,4 @@
-import { WeatherReport, WeatherData } from '@/data-mungin';
+import { WeatherReport, WeatherData } from '@/data-mungin/weather-report';
 
 describe('getDayWithSmallestSpread with data', () => {
     it('should return the correct day with the smallest temperature spread', () => {
