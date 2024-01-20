@@ -1,18 +1,18 @@
 import { readFileSync } from "fs";
 
 export class WeatherData {
-    day: number;
-    maxTemperature: number;
-    minTemperature: number;
+    dayOrTeam: string;
+    maxVal: number;
+    minVal: number;
 
-    constructor(day: number, maxTemperature: number, minTemperature: number) {
-        this.day = day;
-        this.maxTemperature = maxTemperature;
-        this.minTemperature = minTemperature;
+    constructor(day: string, maxVal: number, minVal: number) {
+        this.dayOrTeam = day;
+        this.maxVal = maxVal;
+        this.minVal = minVal;
     }
 
-    getTemperatureSpread() : number {
-        return this.maxTemperature - this.minTemperature;
+    getDifferenceValue() : number {
+        return this.maxVal - this.minVal;
     }
 }
 
@@ -22,7 +22,7 @@ export class WeatherReport {
 
     }
 
-    readWeatherDataFromFile(filePath: string): WeatherData[] {
+    readWeatherDataFromFile(filePath: string): string | null {
         const fileContent = readFileSync(filePath, 'utf8');
         const lines : string[] = fileContent.split('\n').slice(2); // Skip the header lines and empty line
     
@@ -35,9 +35,9 @@ export class WeatherReport {
             }
         }
 
-        this.getDayWithSmallestSpread(weatherDataList);
+        const smallestSpread: string | null = this.getDayWithSmallestSpread(weatherDataList);
     
-        return weatherDataList;
+        return smallestSpread;
     }
 
     convertWeatherDataLine(line: string): WeatherData | null {
@@ -53,7 +53,7 @@ export class WeatherReport {
             make sure 3 columns are there
         */
         if (columns.length >= 3) {
-            const day : number = parseInt(columns[0]);
+            const day : string = (columns[0] ? columns[0].toString() : "");
             const maxTemperature : number = parseInt(columns[1]);
             const minTemperature : number = parseInt(columns[2]);
             return new WeatherData(day, maxTemperature, minTemperature);
@@ -61,17 +61,17 @@ export class WeatherReport {
         return null;
     }
 
-    getDayWithSmallestSpread(weatherDataList: WeatherData[]): number | null {
+    getDayWithSmallestSpread(weatherDataList: WeatherData[]): string | null {
         // assign max int value 9007199254740991
         let smallestSpread = Number.MAX_SAFE_INTEGER;
-        let dayWithSmallestSpread: number | null = null;
+        let dayWithSmallestSpread: string | null = null;
     
         if (weatherDataList && weatherDataList.length > 0) {
             weatherDataList.forEach((weatherData : WeatherData)  => {
-                const spread : number = weatherData.getTemperatureSpread();
+                const spread : number = weatherData.getDifferenceValue();
                 if (spread < smallestSpread) {
                     smallestSpread = spread;
-                    dayWithSmallestSpread = weatherData.day;
+                    dayWithSmallestSpread = weatherData.dayOrTeam;
                 }
             });
         }

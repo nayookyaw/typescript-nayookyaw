@@ -1,18 +1,18 @@
 import { readFileSync } from "fs";
 
 export class SoccerData {
-    teamName: string;
-    forGoal: number;
-    againstGoal: number;
+    dayOrTeam: string;
+    maxVal: number;
+    minVal: number;
 
-    constructor(teamName: string, forGoal: number, againstGoal: number) {
-        this.teamName = teamName;
-        this.forGoal = forGoal;
-        this.againstGoal = againstGoal;
+    constructor(dayOrTeam: string, maxVal: number, minVal: number) {
+        this.dayOrTeam = dayOrTeam;
+        this.maxVal = maxVal;
+        this.minVal = minVal;
     }
 
-    getGoalDifference() : number {
-        return this.forGoal - this.againstGoal;
+    getDifferenceValue() : number {
+        return this.minVal - this.minVal;
     }
 }
 
@@ -58,10 +58,10 @@ export class SoccerReport {
 
         if (soccerDataList && soccerDataList.length > 0) {
             soccerDataList.forEach((soccerData : SoccerData) => {
-                const difference : number = soccerData.getGoalDifference();
+                const difference : number = soccerData.getDifferenceValue();
                 if (difference < smallestDifference) {
                     smallestDifference = difference;
-                    teamWithSmallestDifference = soccerData.teamName;
+                    teamWithSmallestDifference = soccerData.dayOrTeam;
                 }
             })
         }
