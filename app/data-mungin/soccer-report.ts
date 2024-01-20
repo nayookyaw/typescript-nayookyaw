@@ -12,7 +12,7 @@ export class SoccerData {
     }
 
     getDifferenceValue() : number {
-        return this.minVal - this.minVal;
+        return this.maxVal - this.minVal;
     }
 }
 
@@ -21,7 +21,7 @@ export class SoccerReport {
 
     }
 
-    readSoccerDataFromFile(filePath: string) : SoccerData[] {
+    readSoccerDataFromFile(filePath: string) : string | null {
         const fileContent = readFileSync(filePath, 'utf-8');
         const lines : string[] = fileContent.split('\n').slice(1); // skip header
 
@@ -34,9 +34,9 @@ export class SoccerReport {
             }
         }
 
-        this.getTeamWithSmallestDifference(soccerDataList);
+        const smallestDiff: string | null = this.getTeamWithSmallestDifference(soccerDataList);
 
-        return soccerDataList;
+        return smallestDiff;
     }
 
     convertSoccerDataLine(line: string): SoccerData | null {

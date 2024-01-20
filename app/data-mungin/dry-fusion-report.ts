@@ -9,22 +9,31 @@ interface DataItem {
     getDifferenceValue(): number;
 }
 
+type columnCheckType = {
+    "validLength" : number,
+    "firstColumnIndex" : number,
+    "secondColumnIndex" : number,
+    "thirdColumnIndex": number,
+}
+
 // type DataRowFactory<T extends DataItem> = (dayOrTeam: string, maxVal: number, minVal: number) => T;
 
 class ReportBase<T extends DataItem> {
 
     public readDataFromFile(
             filePath: string, 
-            dataModel : new(dayOrTeam: string, maxVal: number, minVal: number) => T
+            dataModel : new(dayOrTeam: string, maxVal: number, minVal: number) => T,
+            sliceCount : number,
+            columnCheckData: columnCheckType,
         ) : string | null
     {
         const fileContent = readFileSync(filePath, 'utf8');
-        const lines : string[] = fileContent.split('\n').slice(2); // Adjust slicing if needed
+        const lines : string[] = fileContent.split('\n').slice(sliceCount); // Adjust slicing if needed
 
         const dataRowList: T[] = [];
     
         for (const line of lines) {
-            const dataRow : T | null = this.convertDataLine(line, dataModel);
+            const dataRow : T | null = this.convertDataLine(line, dataModel, columnCheckData);
             if (dataRow) {
                 dataRowList.push(dataRow);
             }
@@ -37,15 +46,16 @@ class ReportBase<T extends DataItem> {
 
     protected convertDataLine(
             line: string, 
-            dataModel : new(dayOrTeam: string, maxVal: number, minVal: number) => T
+            dataModel : new(dayOrTeam: string, maxVal: number, minVal: number) => T,
+            columnCheckData : columnCheckType
         ) : T | null 
     {
         const columns = line.trim().split(/\s+/);
 
-        if (columns.length >= 3) {
-            const dayOrTeam : string = (columns[0] ? columns[0].toString() : "");
-            const maxVal : number = parseInt(columns[1]);
-            const minVal : number = parseInt(columns[2]);
+        if (columns.length >= columnCheckData.validLength) {
+            const dayOrTeam : string = (columns[columnCheckData.firstColumnIndex] ? columns[columnCheckData.firstColumnIndex].toString() : "");
+            const maxVal : number = parseInt(columns[columnCheckData.secondColumnIndex]);
+            const minVal : number = parseInt(columns[columnCheckData.thirdColumnIndex]);
 
             const returnModel = new dataModel(dayOrTeam, maxVal, minVal);
             return returnModel;
