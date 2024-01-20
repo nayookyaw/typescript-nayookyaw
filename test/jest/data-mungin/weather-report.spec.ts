@@ -13,7 +13,7 @@ describe('getDayWithSmallestSpread with data', () => {
         const dayWithSmallestSpread : string | null = weatherReport.getDayWithSmallestSpread(testWeatherDataList);
 
         // expect 3 since 60-59=1 is the smallest number
-        expect(dayWithSmallestSpread).toBe(3);
+        expect(dayWithSmallestSpread).toBe("3");
     });
 });
 
