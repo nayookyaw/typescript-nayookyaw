@@ -24,12 +24,12 @@ export class WeatherReport {
 
     readWeatherDataFromFile(filePath: string): WeatherData[] {
         const fileContent = readFileSync(filePath, 'utf8');
-        const lines = fileContent.split('\n').slice(2); // Skip the header lines and empty line
+        const lines : string[] = fileContent.split('\n').slice(2); // Skip the header lines and empty line
     
         const weatherDataList: WeatherData[] = [];
     
         for (const line of lines) {
-            const weatherData = this.convertWeatherDataLine(line);
+            const weatherData : WeatherData | null = this.convertWeatherDataLine(line);
             if (weatherData) {
                 weatherDataList.push(weatherData);
             }
@@ -53,9 +53,9 @@ export class WeatherReport {
             make sure 3 columns are there
         */
         if (columns.length >= 3) {
-            const day = parseInt(columns[0]);
-            const maxTemperature = parseInt(columns[1]);
-            const minTemperature = parseInt(columns[2]);
+            const day : number = parseInt(columns[0]);
+            const maxTemperature : number = parseInt(columns[1]);
+            const minTemperature : number = parseInt(columns[2]);
             return new WeatherData(day, maxTemperature, minTemperature);
         }
         return null;
@@ -64,12 +64,11 @@ export class WeatherReport {
     getDayWithSmallestSpread(weatherDataList: WeatherData[]): number | null {
         // assign max int value 9007199254740991
         let smallestSpread = Number.MAX_SAFE_INTEGER;
-        
         let dayWithSmallestSpread: number | null = null;
     
         if (weatherDataList && weatherDataList.length > 0) {
             weatherDataList.forEach((weatherData : WeatherData)  => {
-                const spread = weatherData.getTemperatureSpread();
+                const spread : number = weatherData.getTemperatureSpread();
                 if (spread < smallestSpread) {
                     smallestSpread = spread;
                     dayWithSmallestSpread = weatherData.day;
