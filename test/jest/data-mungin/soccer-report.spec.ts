@@ -11,7 +11,7 @@ describe('getTeamWithSmallestDifference with data', () => {
         const soccerReport : SoccerReport = new SoccerReport();
         const teamWithSmallestDifference = soccerReport.getTeamWithSmallestDifference(soccerDataList);
 
-        // expect 
+        // expect Man U
         expect(teamWithSmallestDifference).toBe("Man U");
     });
 });
@@ -23,7 +23,7 @@ describe('getTeamWithSmallestDifference null', () => {
         const soccerReport : SoccerReport = new SoccerReport();
         const teamWithSmallestDifference = soccerReport.getTeamWithSmallestDifference(soccerDataList);
 
-        // expect 
+        // expect null
         expect(teamWithSmallestDifference).toBeNull();
     });
 });

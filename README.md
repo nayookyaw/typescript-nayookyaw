@@ -14,6 +14,12 @@ npm install
 
 There are two unit test frameworks to choose from, Jest and Mocha.
 
+# Note by Nay Oo Kyaw
+To run jest test case class, make sure to run tsc for first time <br>
+Because to generate js file and map.js files <br>
+
+Everytimes, you update in `ts` file, make sure `tsc filename.ts` again. <br>
+
 ```sh
 npm run test:jest
 ```
